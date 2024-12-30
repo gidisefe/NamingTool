@@ -34,13 +34,18 @@ jobs:
           path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
+    defaults:
+      run:
+        working-directory: ready/AzNamingTool 
+    permissions:
+      contents: none
+      id-token: write #This is required for requesting the JWT
     runs-on: windows-latest
     needs: build
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write #This is required for requesting the JWT
+
 
     steps:
       - name: Download artifact from build job
